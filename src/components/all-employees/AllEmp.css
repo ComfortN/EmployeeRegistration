@@ -1,0 +1,97 @@
+.employee-list {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+    height: 100%;
+  }
+  
+  .employee-list h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .employee-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .employee-list th,
+  .employee-list td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .employee-list th {
+    background-color: #92A4B1;
+    color: white;
+  }
+  
+  .employee-list tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .employee-list td {
+    color: #555;
+  }
+  
+  .employee-list .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .employee-list .actions button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .employee-list .actions .edit-btn {
+    background-color: #ff9800;
+    color: white;
+  }
+  
+  .employee-list .actions .delete-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .employee-list table, 
+    .employee-list th, 
+    .employee-list td {
+      display: block;
+    }
+  
+    .employee-list th {
+      position: absolute;
+      /* top: -9999px; */
+      /* left: -9999px; */
+    }
+  
+    .employee-list td {
+      position: relative;
+      padding-left: 50%;
+      border: none;
+    }
+  
+    .employee-list td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+  
+    .employee-list tr {
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+  
