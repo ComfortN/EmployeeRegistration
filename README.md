@@ -19,10 +19,10 @@ This is a React-based Employee Management System that allows users to manage emp
 
 ### Technologies Used
 
-1. Frontend: React, React Router, CSS
-2. State Management: React hooks (useState, useEffect)
-3. Routing: React Router
-4. Data Storage: Local Storage
+* Frontend: React, React Router, CSS
+* State Management: React hooks (useState, useEffect)
+* Routing: React Router
+* Data Storage: Local Storage
 
 
 ### Design Skecth
