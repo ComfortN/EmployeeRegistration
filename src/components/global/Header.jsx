@@ -11,6 +11,8 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [viewOnly, setViewOnly] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResult, setSearchResult] = useState(null);
 
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -33,14 +35,29 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   };
 
 
+  const handleSearch = () => {
+    const employee = employees.find(emp => emp.id === searchQuery);
+    if (employee) {
+      setSearchResult(employee);
+      setIsModalOpen(true);
+      setIsEditing(false);
+      setViewOnly(true);
+    } else {
+      setSearchResult(null);
+      alert('Employee not found');
+    }
+  };
+
+
   return (
     <>
     <header className="header">
       <GiHamburgerMenu className="burger-menu" onClick={() => setShowNav(!showNav)} />
       <div className="header-right">
         <div className="search">
-          <input type="text" placeholder="Search..." className="search-input" />
-        <button className="search-button">Search</button>
+          <input type="text" placeholder="Search by ID..."
+          className="search-input" value ={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+        <button className="search-button" onClick={handleSearch}>Search</button>
         </div>
 
         <div className="btns">
