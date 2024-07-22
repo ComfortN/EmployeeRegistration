@@ -33,9 +33,9 @@ export default function Login({onLogin}) {
         <div className="loginForm">
             <h1>LOGIN</h1>
             {error && <p className="error">{error}</p>}
-            <form className='theForm'>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="USERNAME" />
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="PASSWORD" />
+            <form className='theForm'  onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="USERNAME" required />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="PASSWORD" required/>
                 <button onClick={handleLogin} className="opacity">SUBMIT</button>
             </form>
         </div>

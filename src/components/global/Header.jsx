@@ -5,7 +5,7 @@ import './Header.css'
 import Modal from '../model/Modal';
 import AddEmployee from '../add-employee/AddEmployee';
 
-export default function Header({ showNav, setShowNav, handleLogout, addEmployee, updateEmployee, deleteEmployee, employees }) {
+export default function Header({ showNav, setShowNav, handleLogout, addEmployee, updateEmployee, deleteEmployee, employees, moveToFormer }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
@@ -49,15 +49,25 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   };
 
 
+  const handleDelete = (employee) => {
+    deleteEmployee(employee);
+    moveToFormer(employee);
+    setIsModalOpen(false);
+  };
+
+
   return (
     <>
     <header className="header">
       <GiHamburgerMenu className="burger-menu" onClick={() => setShowNav(!showNav)} />
+      
       <div className="header-right">
+        
         <div className="search">
           <input type="text" placeholder="Search by ID..."
           className="search-input" value ={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
-        <button className="search-button" onClick={handleSearch}>Search</button>
+        
+          <button className="search-button" onClick={handleSearch}>Search</button>
         </div>
 
         <div className="btns">
@@ -79,7 +89,7 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
       addEmployee={addEmployee}
       updateEmployee={updateEmployee}
       isEditing={isEditing}
-      onDelete={deleteEmployee}
+      onDelete={handleDelete}
       currentEmployee={currentEmployee}
       setIsEditing={setIsEditing}
       viewOnly={viewOnly}

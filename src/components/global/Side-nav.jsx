@@ -3,14 +3,15 @@ import './sideNav.css'
 // import { GiHamburgerMenu } from "react-icons/gi";
 import { Link } from 'react-router-dom';
 
-export default function SideNav({show}) {
+export default function SideNav({show, adminDetails}) {
   return (
     <div className={show ? 'sidebar active' : 'sidebar'}>
       <div className='profile'>
         <div className="profileImg">
-          <img src="./258Comfort Ngwenya congwen022.jpg" alt="" className='prof' />
+          <img src={adminDetails.image} alt="" className='prof' />
         </div>
-        <p>Name</p>
+        <p className="admin-name">{adminDetails.name}</p>
+        <p className="admin-email">{adminDetails.email}</p>
       </div>
       <div className="sideLinks">
         <ul>

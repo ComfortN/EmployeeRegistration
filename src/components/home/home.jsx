@@ -4,16 +4,11 @@ import './home.css'
 import AllEmp from '../all-employees/AllEmp'
 
 
-export default function Home(employees) {
+export default function Home({employees, onEmployeeClick}) {
 
-  const currentEmployees = [
-    { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', position: 'Manager' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '098-765-4321', position: 'Developer' },
-    { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', position: 'Manager' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '098-765-4321', position: 'Developer' }
-  ];
+  
 
-  // const [showNav, setShowNav] = useState(false)
+  
   const totalEmployees = Array.isArray(employees) ? employees.length : 0;
   const recentEmployees = Array.isArray(employees) ? employees.slice(-5) : [];
   return (
@@ -33,20 +28,12 @@ export default function Home(employees) {
             </ul>
           </div>
         </div>
-        <div className="dashboard-actions">
-          <button onClick={() => { /* Handle add new employee action */ }}>Add New Employee</button>
-          <button onClick={() => { /* Handle view all employees action */ }}>View All Employees</button>
-          <button onClick={() => { /* Handle view employees who left action */ }}>View Employees Who Left</button>
-        </div>
-        <div className="dashboard-recent-activities">
-          <h2>Recent Activities</h2>
-          {/* Display recent activities like additions, updates, and deletions */}
-        </div>
-
-
-        <div className="employee-list-section">
-        <AllEmp title="All Employees" employees={currentEmployees} />
+        
+        <div className="employee-table">
+        <AllEmp title="All Employees" employees={employees} onEmployeeClick={onEmployeeClick} />
       </div>
+
+       
       </div>
   )
 }

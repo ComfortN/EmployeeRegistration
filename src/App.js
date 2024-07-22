@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/login/login';
 import Home from './components/home/home';
@@ -7,13 +7,12 @@ import Header from './components/global/Header'
 import SideNav from './components/global/Side-nav';
 import AllEmployees from './components/all-employees/AllEmp';
 import FormerEmployees from './components/all-employees/FormerEmpl'
-// import { GiHamburgerMenu } from "react-icons/gi";
-// import AddEmployee from './components/add-employee/AddEmployee';
+import AddEmployee from './components/add-employee/AddEmployee';
 import Modal from './components/model/Modal';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
   const [showNav, setShowNav] = useState(false)
   const [employees, setEmployees] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState([]);
@@ -23,6 +22,35 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
+  const adminDetails = {
+    name: 'Nqobile Ngwenya',
+    email: 'admin@example.com',
+    image: './258Comfort Ngwenya congwen022.jpg'
+  };
+
+  useEffect(() => {
+    localStorage.setItem('isAuthenticated', isAuthenticated.toString());
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    const storedEmployees = localStorage.getItem('employees');
+    const storedFormerEmployees = localStorage.getItem('formerEmployees');
+    if (storedEmployees) {
+      setEmployees(JSON.parse(storedEmployees));
+    }
+    if (storedFormerEmployees) {
+      setFormerEmployees(JSON.parse(storedFormerEmployees));
+    }
+  }, []);
+
+  // Save employees to local storage whenever they change
+  useEffect(() => {
+    
+    localStorage.setItem('employees', JSON.stringify(employees));
+    localStorage.setItem('formerEmployees', JSON.stringify(formerEmployees));
+  }, [employees, formerEmployees]);
+
+
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
@@ -30,27 +58,16 @@ function App() {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('employees');
+  localStorage.removeItem('formerEmployees');
   }
 
-  
-
-  // const employees = [
-  //   { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', position: 'Manager' },
-  //   { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '098-765-4321', position: 'Developer' },
-  //   { id: 1, name: 'John Doe', email: 'john@example.com', phone: '123-456-7890', position: 'Manager' },
-  //   { id: 2, name: 'Jane Smith', email: 'jane@example.com', phone: '098-765-4321', position: 'Developer' }
-  // ];
-
-
-  // const formerEmployees = [
-  //   { id: 3, name: 'Mike Johnson', email: 'mike@example.com', phone: '123-456-7890', position: 'Analyst' },
-  //   { id: 4, name: 'Emily Davis', email: 'emily@example.com', phone: '098-765-4321', position: 'Designer' }
-  // ];
 
 
   const addEmployee = (employee) => {
     setEmployees([...employees, employee]);
-    // setIsModalOpen(false);
+
   };
 
   const updateEmployee = (updatedEmployee) => {
@@ -59,8 +76,15 @@ function App() {
   };
 
   const deleteEmployee = (employee) => {
+   
+    // setEmployees(employees.filter(emp => emp.id !== employee.id));
+    moveToFormerEmployees(employee);
+  };
+
+
+  const moveToFormerEmployees = (employee) => {
     setFormerEmployees([...formerEmployees, employee]);
-    setEmployees(employees.filter(emp => emp.id !== employee.id));
+    setEmployees(employees.filter(emp => emp.id !== employee.id))
   };
 
 
@@ -90,8 +114,9 @@ function App() {
           updateEmployee={updateEmployee}
           deleteEmployee={deleteEmployee}
           employees={employees}
+          moveToFormer={moveToFormerEmployees}
           />
-          <SideNav show={showNav} />
+          <SideNav show={showNav} adminDetails={adminDetails} />
         </>
       )}
         
@@ -108,6 +133,19 @@ function App() {
         </div>
           
       </Router>
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <AddEmployee
+          addEmployee={addEmployee}
+          updateEmployee={updateEmployee}
+          isEditing={isEditing}
+          onDelete={deleteEmployee}
+          currentEmployee={currentEmployee}
+          setIsEditing={setIsEditing}
+          viewOnly={viewOnly}
+          setViewOnly={setViewOnly}
+        />
+      </Modal>
     </>
     </div>
   );
