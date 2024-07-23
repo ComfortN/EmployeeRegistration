@@ -4,13 +4,11 @@ import './home.css'
 import AllEmp from '../all-employees/AllEmp'
 
 
-export default function Home({employees, onEmployeeClick}) {
+export default function Home({employees, formerEmployees, onEmployeeClick}) {
 
-  
-
-  
   const totalEmployees = Array.isArray(employees) ? employees.length : 0;
-  const recentEmployees = Array.isArray(employees) ? employees.slice(-5) : [];
+  const formerEmployeesCount = Array.isArray(formerEmployees) ? formerEmployees.length : 0;
+  
   return (
     <div className="dashboard">
         <h1>Employee Registration System</h1>
@@ -20,12 +18,8 @@ export default function Home({employees, onEmployeeClick}) {
             <p>{totalEmployees}</p>
           </div>
           <div className="summary-card">
-            <h2>Recently Added</h2>
-            <ul>
-              {recentEmployees.map(employee => (
-                <li key={employee.id}>{employee.name}</li>
-              ))}
-            </ul>
+          <h2>Former Employees</h2>
+          <p>{formerEmployeesCount}</p>
           </div>
         </div>
         

@@ -61,7 +61,7 @@
     color: white;
   }
   
-  /* Responsive Styles */
+
   @media (max-width: 768px) {
     .employee-list table, 
     .employee-list th, 
@@ -70,7 +70,7 @@
     }
   
     .employee-list th {
-      position: absolute;
+      /* position: absolute; */
       /* top: -9999px; */
       /* left: -9999px; */
     }

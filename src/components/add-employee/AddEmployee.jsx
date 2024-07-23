@@ -11,17 +11,22 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
         id: ''
     });
     const [errors, setErrors] = useState({})
-    const [imagePreview, setImagePreview] = useState('');
+    const [imagePreview, setImagePreview] = useState('default-avatar.png');
     
-        useEffect(() => {
-            if (isEditing && currentEmployee) {
-                setEmployee(currentEmployee);
-            if (currentEmployee) {
-                setImagePreview(URL.createObjectURL(currentEmployee.image) );
-        } else {
-            setImagePreview('default-avatar.png');
+    useEffect(() => {
+        if (isEditing && currentEmployee) {
+            setEmployee(currentEmployee);
+            if (currentEmployee.image) {
+                // Check if the image is a Blob or File object
+                if (currentEmployee.image instanceof Blob || currentEmployee.image instanceof File) {
+                    setImagePreview(URL.createObjectURL(currentEmployee.image));
+                } else {
+                    setImagePreview(currentEmployee.image);
+                }
+            } else {
+                setImagePreview('default-avatar.png');
+            }
         }
-    }
     }, [isEditing, currentEmployee]);
     
 
@@ -45,9 +50,10 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
         const { name, value, files } = e.target;
         if (name === 'image' && files[0]) {
             const file = files[0];
-            setEmployee({ ...employee, image: file });
+            
             const reader = new FileReader();
             reader.onloadend = () => {
+                setEmployee({ ...employee, image: reader.result });
                 setImagePreview(reader.result);
             };
             reader.readAsDataURL(file);
@@ -73,7 +79,7 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
                 position: '',
                 id: ''
             });
-            setImagePreview('');
+            setImagePreview('default-avatar.png');
         }
     };
 
@@ -90,7 +96,7 @@ return (
                     required ={!isEditing && !currentEmployee}
                 />
             </div>
-        {/* <input type="file" name="image" onChange={(e) => setEmployee({ ...employee, image: e.target.files[0] })} required /> */}
+        
         <input type="text" name="name" value={employee.name} onChange={handleChange} placeholder="Name" required disabled={viewOnly} />
         {errors.name && <p className="error">{errors.name}</p>}
         <input type="email" name="email" value={employee.email} onChange={handleChange} placeholder="Email" required disabled={viewOnly}  />
@@ -102,10 +108,10 @@ return (
         <input type="text" name="id" value={employee.id} onChange={handleChange} placeholder="ID" required disabled={viewOnly} />
         {errors.id && <p className="error">{errors.id}</p>}
         {!viewOnly && (
-            <>
-                <button type="submit">{isEditing ? 'Update' : 'Add'} Employee</button>
-                {isEditing && <button type="button" onClick={() => onDelete(employee)}>Delete</button>}
-            </>
+            <div className="button-group">
+            <button type="submit">{isEditing ? 'Update' : 'Add'} Employee</button>
+            {isEditing && <button type="button" onClick={() => onDelete(employee)}>Delete</button>}
+        </div>
         )}
         {viewOnly && (
             <button type='button' onClick={() => setViewOnly(false)}>Edit</button>

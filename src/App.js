@@ -1,21 +1,20 @@
+import React, { useEffect, useState } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import React, {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/login/login';
-import Home from './components/home/home';
-import Header from './components/global/Header'
-import SideNav from './components/global/Side-nav';
-import AllEmployees from './components/all-employees/AllEmp';
-import FormerEmployees from './components/all-employees/FormerEmpl'
 import AddEmployee from './components/add-employee/AddEmployee';
+import AllEmployees from './components/all-employees/AllEmp';
+import Header from './components/global/Header';
+import SideNav from './components/global/Side-nav';
+import Home from './components/home/home';
+import Login from './components/login/login';
 import Modal from './components/model/Modal';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated') === 'true');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showNav, setShowNav] = useState(false)
   const [employees, setEmployees] = useState([]);
-  const [currentEmployee, setCurrentEmployee] = useState([]);
+  const [currentEmployee, setCurrentEmployee] = useState(null);
   const [formerEmployees, setFormerEmployees] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [viewOnly, setViewOnly] = useState(true);
@@ -24,15 +23,14 @@ function App() {
 
   const adminDetails = {
     name: 'Nqobile Ngwenya',
-    email: 'admin@example.com',
+    email: 'nqobie@citismart.com',
     image: './258Comfort Ngwenya congwen022.jpg'
   };
 
   useEffect(() => {
-    localStorage.setItem('isAuthenticated', isAuthenticated.toString());
-  }, [isAuthenticated]);
+    const storedAuth = localStorage.getItem('isAuthenticated') === 'true';
+    setIsAuthenticated(storedAuth);
 
-  useEffect(() => {
     const storedEmployees = localStorage.getItem('employees');
     const storedFormerEmployees = localStorage.getItem('formerEmployees');
     if (storedEmployees) {
@@ -43,13 +41,11 @@ function App() {
     }
   }, []);
 
-  // Save employees to local storage whenever they change
   useEffect(() => {
-    
+    localStorage.setItem('isAuthenticated', isAuthenticated.toString());
     localStorage.setItem('employees', JSON.stringify(employees));
     localStorage.setItem('formerEmployees', JSON.stringify(formerEmployees));
-  }, [employees, formerEmployees]);
-
+  }, [isAuthenticated, employees, formerEmployees]);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -59,8 +55,8 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isAuthenticated');
-  localStorage.removeItem('employees');
-  localStorage.removeItem('formerEmployees');
+  // localStorage.removeItem('employees');
+  // localStorage.removeItem('formerEmployees');
   }
 
 
@@ -77,7 +73,7 @@ function App() {
 
   const deleteEmployee = (employee) => {
    
-    // setEmployees(employees.filter(emp => emp.id !== employee.id));
+
     moveToFormerEmployees(employee);
   };
 
@@ -124,7 +120,7 @@ function App() {
         <div className={isAuthenticated ? 'main': ''}>
           <Routes>
             <Route path='/login' element={<Login onLogin={handleLogin}/>} />
-            <Route path='/' element={isAuthenticated ? <Home employees={employees} /> : <Navigate to={"/login"}/>} />
+            <Route path='/' element={isAuthenticated ? <Home employees={employees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
             <Route path='/all-employees' element={isAuthenticated ? <AllEmployees title="All Employees" employees={employees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
             <Route path='/former-employees' element={isAuthenticated ? <AllEmployees title="Former Employees" employees={formerEmployees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
 
