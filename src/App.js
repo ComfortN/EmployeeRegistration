@@ -50,6 +50,7 @@ function App() {
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
+  
 
 
   const handleLogout = () => {
@@ -120,7 +121,7 @@ function App() {
         <div className={isAuthenticated ? 'main': ''}>
           <Routes>
             <Route path='/login' element={<Login onLogin={handleLogin}/>} />
-            <Route path='/' element={isAuthenticated ? <Home employees={employees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
+            <Route path='/' element={isAuthenticated ? <Home employees={employees} formerEmployees={formerEmployees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
             <Route path='/all-employees' element={isAuthenticated ? <AllEmployees title="All Employees" employees={employees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
             <Route path='/former-employees' element={isAuthenticated ? <AllEmployees title="Former Employees" employees={formerEmployees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
 
