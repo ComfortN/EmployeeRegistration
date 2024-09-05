@@ -34,6 +34,21 @@
     color: #555;
   }
   
-
-
+  @media (max-width: 480px) {
+    .dashboard-summary{
+      justify-content: space-between;
+    }
   
+    .summary-card {
+      padding: 0;
+      width: 40%;
+    }
+
+    .summary-card h2 {
+      font-size: medium;
+    }
+  
+    .dashboard h1 {
+      font-size: 1.5rem;
+    }
+  }

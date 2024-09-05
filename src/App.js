@@ -11,7 +11,11 @@ import Modal from './components/model/Modal';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('isAuthenticated') === 'true';
+  });
+  
   const [showNav, setShowNav] = useState(false)
   const [employees, setEmployees] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState(null);
@@ -19,6 +23,7 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [viewOnly, setViewOnly] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [initialise, setInitialse] = useState(false);
 
 
   const adminDetails = {
@@ -26,6 +31,7 @@ function App() {
     email: 'nqobie@citismart.com',
     image: './258Comfort Ngwenya congwen022.jpg'
   };
+  
 
   useEffect(() => {
     const storedAuth = localStorage.getItem('isAuthenticated') === 'true';
@@ -34,14 +40,19 @@ function App() {
     const storedEmployees = localStorage.getItem('employees');
     const storedFormerEmployees = localStorage.getItem('formerEmployees');
     if (storedEmployees) {
+      console.log('Loaded employees from localStorage:', JSON.parse(storedEmployees));
       setEmployees(JSON.parse(storedEmployees));
     }
     if (storedFormerEmployees) {
+      console.log('Loaded former employees from localStorage:', JSON.parse(storedFormerEmployees));
       setFormerEmployees(JSON.parse(storedFormerEmployees));
     }
+
+    setInitialse(true);
   }, []);
 
   useEffect(() => {
+    console.log('Saving employees to localStorage:', employees);
     localStorage.setItem('isAuthenticated', isAuthenticated.toString());
     localStorage.setItem('employees', JSON.stringify(employees));
     localStorage.setItem('formerEmployees', JSON.stringify(formerEmployees));
@@ -56,25 +67,23 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isAuthenticated');
-  // localStorage.removeItem('employees');
-  // localStorage.removeItem('formerEmployees');
+  localStorage.removeItem('employees');
+  localStorage.removeItem('formerEmployees');
   }
 
 
 
   const addEmployee = (employee) => {
+    console.log('adding: ', employee)
     setEmployees([...employees, employee]);
 
   };
 
   const updateEmployee = (updatedEmployee) => {
     setEmployees(employees.map(emp => (emp.id === updatedEmployee.id ? updatedEmployee : emp)));
-   
   };
 
   const deleteEmployee = (employee) => {
-   
-
     moveToFormerEmployees(employee);
   };
 
@@ -91,6 +100,11 @@ function App() {
     setViewOnly(true);
     setIsModalOpen(true);
   };
+
+
+  if(!initialise) {
+    return <div>Loading...</div>
+  }
 
 
 

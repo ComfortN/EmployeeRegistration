@@ -38,9 +38,11 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   const handleSearch = () => {
     const employee = employees.find(emp => emp.id === searchQuery);
     if (employee) {
+      console.log('Searched Employee:', employee);
+      setCurrentEmployee(employee)
       setSearchResult(employee);
       setIsModalOpen(true);
-      setIsEditing(false);
+      setIsEditing(true);
       setViewOnly(true);
     } else {
       setSearchResult(null);
@@ -59,7 +61,11 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   return (
     <>
     <header className="header">
+      <div className='logoAndMenu'>
+        <img src="Green Simple Eco Energy Logo1.png" alt="logo" className="logo" />
       <GiHamburgerMenu className="burger-menu" onClick={() => setShowNav(!showNav)} />
+      
+      </div>
       
       <div className="header-right">
         
@@ -77,7 +83,7 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
         {isHomePage && (
           <button className="logout-button" onClick={handleLogout}>Logout</button>
         )}
-        <img src="Green Simple Eco Energy Logo1.png" alt="logo" className="logo" />
+        
         </div>
         
       </div>
