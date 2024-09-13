@@ -3,7 +3,8 @@ import './login.css'
 import React, {useState} from 'react';
 
 
-export default function Login({onLogin}) {
+
+export default function Login({onLogin, setLoading}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -13,6 +14,10 @@ export default function Login({onLogin}) {
   const storedUsername = 'admin'
   const storedPassword = 'admin123';
 
+  setLoading(true);
+
+  setTimeout(() => {
+
   if (username === storedUsername && password === storedPassword) {
       onLogin();
       navigate('/')
@@ -20,7 +25,11 @@ export default function Login({onLogin}) {
   } else {
       setError('Invalid username or password');
     }
+    setLoading(false);
+    },  2000);
   };
+
+
   return (
     <div className='login'>
 
@@ -34,6 +43,7 @@ export default function Login({onLogin}) {
         <div className="loginForm">
             <h1>LOGIN</h1>
             {error && <p className="error">{error}</p>}
+            
             <form className='theForm'  onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
                 <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="USERNAME" required />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="PASSWORD" required/>

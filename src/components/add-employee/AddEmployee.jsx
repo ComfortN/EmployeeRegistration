@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import './AddEmployee.css'
 
-export default function AddEmployee({addEmployee, updateEmployee, isEditing, onDelete, currentEmployee, setIsEditing, viewOnly, setViewOnly}) {
+export default function AddEmployee({addEmployee, updateEmployee, isEditing, onDelete, currentEmployee, setIsEditing, viewOnly, setViewOnly, setLoading}) {
     const [employee, setEmployee] = useState({
         name: '',
         email: '',
@@ -14,7 +14,7 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
     const [imagePreview, setImagePreview] = useState('default-avatar.png');
     
     useEffect(() => {
-        if (isEditing && currentEmployee) {
+        if (isEditing && currentEmployee ) {
             setEmployee(currentEmployee);
             if (currentEmployee.image) {
                 // Check if the image is a Blob or File object

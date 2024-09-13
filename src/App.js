@@ -8,6 +8,7 @@ import SideNav from './components/global/Side-nav';
 import Home from './components/home/home';
 import Login from './components/login/login';
 import Modal from './components/model/Modal';
+import Loader from './components/Loader/Loader';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
   const [viewOnly, setViewOnly] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [initialise, setInitialse] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const adminDetails = {
@@ -134,8 +136,8 @@ function App() {
       
         <div className={isAuthenticated ? 'main': ''}>
           <Routes>
-            <Route path='/login' element={<Login onLogin={handleLogin}/>} />
-            <Route path='/' element={isAuthenticated ? <Home employees={employees} formerEmployees={formerEmployees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
+            <Route path='/login' element={<Login onLogin={handleLogin}  setLoading={ setLoading}/>} />
+            <Route path='/' element={isAuthenticated ? <Home employees={employees} formerEmployees={formerEmployees} onEmployeeClick={handleEmployeeClick} setLoading={ setLoading}/> : <Navigate to={"/login"}/>} />
             <Route path='/all-employees' element={isAuthenticated ? <AllEmployees title="All Employees" employees={employees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
             <Route path='/former-employees' element={isAuthenticated ? <AllEmployees title="Former Employees" employees={formerEmployees} onEmployeeClick={handleEmployeeClick}/> : <Navigate to={"/login"}/>} />
 
@@ -155,9 +157,14 @@ function App() {
           setIsEditing={setIsEditing}
           viewOnly={viewOnly}
           setViewOnly={setViewOnly}
+          setLoading={ setLoading}
         />
       </Modal>
+
     </>
+    {loading && (
+      <Loader />
+    )}
     </div>
   );
 }

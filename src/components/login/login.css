@@ -17,6 +17,10 @@ body{
     align-items: center;
 }
 
+.loginForm h1 {
+    color: white;
+}
+
 .theForm {
     width: 50%;
     background: rgba(0, 0, 0, 0.05);
@@ -71,6 +75,19 @@ body{
     margin-bottom: 10px;
 }
 
+
+.full-screen-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgba(226, 12, 12, 0.1);
+    width: 100%;
+    height: 100vh;
+    z-index: 999; 
+  }
 
 @media (max-width:768px ) {
     .login {
