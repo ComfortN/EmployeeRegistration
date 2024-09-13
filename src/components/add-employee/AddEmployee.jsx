@@ -68,8 +68,10 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
             if (isEditing) {
                 updateEmployee(employee);
                 setIsEditing(false);
+                alert('Employee updated successfully!');
             } else {
                 addEmployee(employee);
+                alert('Employee added successfully!');
             }
             setEmployee({
                 name: '',
@@ -82,6 +84,16 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
             setImagePreview('default-avatar.png');
         }
     };
+
+
+    const handleDelete = (employee) => {
+        const isConfirmed = window.confirm(`Are you sure you want to delete employee ${employee.name}?`);
+        if (isConfirmed) {
+            onDelete(employee);
+            alert('Employee deleted successfully! Moved to Former.');
+        }
+    };
+    
 
 
 return (
@@ -110,7 +122,7 @@ return (
         {!viewOnly && (
             <div className="button-group">
             <button type="submit">{isEditing ? 'Update' : 'Add'} Employee</button>
-            {isEditing && <button type="button" onClick={() => onDelete(employee)}>Delete</button>}
+            {isEditing && <button type="button" onClick={() => handleDelete(employee)}>Delete</button>}
         </div>
         )}
         {viewOnly && (

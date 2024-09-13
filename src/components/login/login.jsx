@@ -16,6 +16,7 @@ export default function Login({onLogin}) {
   if (username === storedUsername && password === storedPassword) {
       onLogin();
       navigate('/')
+      alert('Login successfully!');
   } else {
       setError('Invalid username or password');
     }

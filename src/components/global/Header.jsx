@@ -58,6 +58,14 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   };
 
 
+  const handleLogoutConfirmation = () => {
+    const isConfirmed = window.confirm('Are you sure you want to log out?');
+    if (isConfirmed) {
+      handleLogout();
+    }
+  };
+
+
   return (
     <>
     <header className="header">
@@ -81,7 +89,7 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
           <button className="add-employee-button" onClick={handleAddEmployee}>Add Employee</button>
         )}
         {isHomePage && (
-          <button className="logout-button" onClick={handleLogout}>Logout</button>
+          <button className="logout-button" onClick={handleLogoutConfirmation}>Logout</button>
         )}
         
         </div>
