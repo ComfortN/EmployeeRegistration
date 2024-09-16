@@ -54,10 +54,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    setTimeout(() => {
     console.log('Saving employees to localStorage:', employees);
     localStorage.setItem('isAuthenticated', isAuthenticated.toString());
     localStorage.setItem('employees', JSON.stringify(employees));
     localStorage.setItem('formerEmployees', JSON.stringify(formerEmployees));
+    },1);
   }, [isAuthenticated, employees, formerEmployees]);
 
   const handleLogin = () => {
@@ -69,8 +71,8 @@ function App() {
   const handleLogout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isAuthenticated');
-  localStorage.removeItem('employees');
-  localStorage.removeItem('formerEmployees');
+    localStorage.removeItem('employees');
+    localStorage.removeItem('formerEmployees');
   }
 
 

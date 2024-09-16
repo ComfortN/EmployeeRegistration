@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
+import Popup from '../popup/Popup';
 import './AddEmployee.css'
 
 export default function AddEmployee({addEmployee, updateEmployee, isEditing, onDelete, currentEmployee, setIsEditing, viewOnly, setViewOnly, setLoading}) {
@@ -12,6 +13,8 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
     });
     const [errors, setErrors] = useState({})
     const [imagePreview, setImagePreview] = useState('default-avatar.png');
+    const [popupMessage, setPopupMessage] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
     
     useEffect(() => {
         if (isEditing && currentEmployee ) {
@@ -68,10 +71,10 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
             if (isEditing) {
                 updateEmployee(employee);
                 setIsEditing(false);
-                alert('Employee updated successfully!');
+                showAlert('Employee updated successfully!');
             } else {
                 addEmployee(employee);
-                alert('Employee added successfully!');
+                showAlert('Employee added successfully!');
             }
             setEmployee({
                 name: '',
@@ -90,14 +93,25 @@ export default function AddEmployee({addEmployee, updateEmployee, isEditing, onD
         const isConfirmed = window.confirm(`Are you sure you want to delete employee ${employee.name}?`);
         if (isConfirmed) {
             onDelete(employee);
-            alert('Employee deleted successfully! Moved to Former.');
+            showAlert('Employee deleted successfully! Moved to Former.');
         }
+    };
+
+
+    const showAlert = (message) => {
+        setPopupMessage(message);
+        setShowPopup(true);
+        setTimeout(() => {
+            setShowPopup(false);
+        }, 3000);
     };
     
 
 
 return (
-    <form onSubmit={handleSubmit} className='form-container'>
+    <>
+         {showPopup && <Popup message={popupMessage} />}
+         <form onSubmit={handleSubmit} className='form-container'>
         <div className="image-container">
                 <img src={imagePreview} alt="Profile Preview" />
                 <input
@@ -129,5 +143,7 @@ return (
             <button type='button' onClick={() => setViewOnly(false)}>Edit</button>
         )}
     </form>
+    </>
+    
     );
 }

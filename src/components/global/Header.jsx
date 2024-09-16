@@ -4,8 +4,9 @@ import {Link, useLocation} from 'react-router-dom'
 import './Header.css'
 import Modal from '../model/Modal';
 import AddEmployee from '../add-employee/AddEmployee';
+import Popup from '../popup/Popup';
 
-export default function Header({ showNav, setShowNav, handleLogout, addEmployee, updateEmployee, deleteEmployee, employees, moveToFormer }) {
+export default function Header({ showNav, setShowNav, handleLogout, addEmployee, updateEmployee, deleteEmployee, employees, moveToFormer, formerEmployees }) {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState(null);
@@ -13,6 +14,8 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   const [viewOnly, setViewOnly] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResult, setSearchResult] = useState(null);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
 
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -35,21 +38,41 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   };
 
 
+  // const handleSearch = () => {
+  //   const employee = employees.find(emp => emp.id === searchQuery) || formerEmployees.find(emp => emp.id === searchQuery);
+  //   if (employee) {
+  //     console.log('Searched Employee:', employee);
+  //     setCurrentEmployee(employee)
+  //     setSearchResult(employee);
+  //     setIsModalOpen(true);
+  //     setIsEditing(true);
+  //     setViewOnly(true);
+  //   } else {
+  //     setSearchResult(null);
+  //     showAlert('Employee not found');
+  //   }
+  // };
+
+
   const handleSearch = () => {
-    const employee = employees.find(emp => emp.id === searchQuery);
+    const employeeList = employees || [];
+    const formerEmployeeList = formerEmployees || [];
+    const employee = employeeList.find(emp => emp.id === searchQuery) || formerEmployeeList.find(emp => emp.id === searchQuery);
+    
     if (employee) {
       console.log('Searched Employee:', employee);
-      setCurrentEmployee(employee)
+      setCurrentEmployee(employee);
       setSearchResult(employee);
       setIsModalOpen(true);
       setIsEditing(true);
       setViewOnly(true);
     } else {
       setSearchResult(null);
-      alert('Employee not found');
+      showAlert('Employee not found');
     }
+    console.log(formerEmployeeList)
   };
-
+  
 
   const handleDelete = (employee) => {
     deleteEmployee(employee);
@@ -61,13 +84,27 @@ export default function Header({ showNav, setShowNav, handleLogout, addEmployee,
   const handleLogoutConfirmation = () => {
     const isConfirmed = window.confirm('Are you sure you want to log out?');
     if (isConfirmed) {
-      handleLogout();
+      showAlert('Logged-out successfully.');
+      setTimeout(() => {
+        handleLogout();
+      }, 3000); 
     }
   };
+  
+
+
+  const showAlert = (message) => {
+    setPopupMessage(message);
+    setShowPopup(true);
+    setTimeout(() => {
+        setShowPopup(false);
+    }, 3000);
+};
 
 
   return (
     <>
+    {showPopup && <Popup message={popupMessage} />}
     <header className="header">
       <div className='logoAndMenu'>
         <img src="Green Simple Eco Energy Logo1.png" alt="logo" className="logo" />

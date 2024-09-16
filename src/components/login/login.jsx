@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './login.css'
+import Popup from '../popup/Popup';
 import React, {useState} from 'react';
 
 
@@ -8,6 +9,8 @@ export default function Login({onLogin, setLoading}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [popupMessage, setPopupMessage] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -19,9 +22,12 @@ export default function Login({onLogin, setLoading}) {
   setTimeout(() => {
 
   if (username === storedUsername && password === storedPassword) {
-      onLogin();
-      navigate('/')
-      alert('Login successfully!');
+    showAlert('Login successfully!..');
+      setTimeout(() => {
+        onLogin();
+        navigate('/')
+      }, 2000);
+     
   } else {
       setError('Invalid username or password');
     }
@@ -30,8 +36,19 @@ export default function Login({onLogin, setLoading}) {
   };
 
 
+  const showAlert = (message) => {
+    setPopupMessage(message);
+    setShowPopup(true);
+    setTimeout(() => {
+        setShowPopup(false);
+    }, 3000);
+};
+
+
   return (
-    <div className='login'>
+    <>
+      {showPopup && <Popup message={popupMessage} />}
+      <div className='login'>
 
         <div className="loginSide">
             <div className="pic">
@@ -51,5 +68,7 @@ export default function Login({onLogin, setLoading}) {
             </form>
         </div>
     </div>
+    </>
+    
   )
 }
